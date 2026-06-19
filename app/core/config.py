@@ -56,6 +56,7 @@ class Settings(BaseSettings):
     EMAIL_FROM_NAME: str = "Learning Platform"
     EMAIL_FROM_EMAIL: str = "noreply@learningplatform.com"
     EMAIL_TEMPLATE_DIR: str = "app/templates"
+    EMAIL_USE_TLS: bool = True
 
     # ── AWS S3 ───────────────────────────────────────────────────────────
     AWS_ACCESS_KEY_ID: Optional[str] = None

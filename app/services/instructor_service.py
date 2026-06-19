@@ -67,7 +67,9 @@ class InstructorService:
 
     def update_instructor(self, instructor_id: int, inst_in: InstructorUpdate) -> Instructor:
         """Partially update an instructor's details."""
-        inst = self.get_instructor(instructor_id)
+        inst = crud_instructor.get(self.db, instructor_id)
+        if not inst:
+            raise NotFoundException("Instructor", instructor_id)
         update_data = inst_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(inst, field, value)

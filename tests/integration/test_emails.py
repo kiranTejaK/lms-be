@@ -29,6 +29,7 @@ def test_functional_email_delivery(mailhog_client):
         mock_settings.EMAIL_FROM_NAME = "Test Admin"
         mock_settings.EMAIL_FROM_EMAIL = "admin@test.com"
         mock_settings.EMAIL_TEMPLATE_DIR = "app/templates"
+        mock_settings.EMAIL_USE_TLS = False
 
         recipient = "user@example.com"
         subject = "Integration Test Email"

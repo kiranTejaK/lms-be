@@ -50,7 +50,9 @@ class CategoryService:
 
     def update_category(self, category_id: int, cat_in: CategoryUpdate) -> Category:
         """Update a category's fields."""
-        cat = self.get_category(category_id)
+        cat = crud_category.get(self.db, category_id)
+        if not cat:
+            raise NotFoundException("Category", category_id)
         update_data = cat_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(cat, field, value)
@@ -63,7 +65,9 @@ class CategoryService:
 
     def delete_category(self, category_id: int) -> dict:
         """Delete a category. Courses referencing it will have category_id set to NULL."""
-        cat = self.get_category(category_id)
+        cat = crud_category.get(self.db, category_id)
+        if not cat:
+            raise NotFoundException("Category", category_id)
         self.db.delete(cat)
         self.db.commit()
 

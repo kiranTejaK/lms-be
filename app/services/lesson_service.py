@@ -57,7 +57,9 @@ class LessonService:
 
     def update_lesson(self, lesson_id: int, lesson_in: LessonUpdate) -> Lesson:
         """Partially update a lesson."""
-        lesson = self.get_lesson(lesson_id)
+        lesson = crud_lesson.get(self.db, lesson_id)
+        if not lesson:
+            raise NotFoundException("Lesson", lesson_id)
         update_data = lesson_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(lesson, field, value)
@@ -70,7 +72,9 @@ class LessonService:
 
     def delete_lesson(self, lesson_id: int) -> dict:
         """Delete a lesson."""
-        lesson = self.get_lesson(lesson_id)
+        lesson = crud_lesson.get(self.db, lesson_id)
+        if not lesson:
+            raise NotFoundException("Lesson", lesson_id)
         self.db.delete(lesson)
         self.db.commit()
 
