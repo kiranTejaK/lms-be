@@ -9,6 +9,7 @@
 """Category endpoint tests."""
 
 import uuid
+
 from app.core.config import settings
 
 PREFIX = f"/{settings.APP_PREFIX}/v1"

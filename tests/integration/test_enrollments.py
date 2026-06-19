@@ -21,7 +21,7 @@ def test_enroll_and_list_enrollments(client, test_course, auth_headers, test_use
         headers=auth_headers,
     )
     assert resp.status_code == 200
-    enrollment_id = resp.json()["enrollment_id"]
+    resp.json()["enrollment_id"]
 
     # List user enrollments
     resp = client.get(f"{PREFIX}/enrollments/user/{test_user.id}")

@@ -1,7 +1,9 @@
-from sqlalchemy import Column, String, JSON, Integer, Text, DateTime
+from sqlalchemy import JSON, Column, DateTime, Integer, String, Text
 from sqlalchemy.sql import func
+
 from app.db.base import BaseModel
 from app.db.mixins import IDMixin, TimeStampMixin
+
 
 class FailedTask(BaseModel, IDMixin, TimeStampMixin):
     __tablename__ = 'failed_tasks'

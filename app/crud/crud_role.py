@@ -2,12 +2,12 @@
 
 from typing import Optional
 
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
 from app.models.user import Role
-from app.schemas.user import RoleCreate, RoleBase
+from app.schemas.user import RoleBase, RoleCreate
 
 
 class CRUDRole(CRUDBase[Role, RoleCreate, RoleBase]):

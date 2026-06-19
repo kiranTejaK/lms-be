@@ -7,21 +7,21 @@ invalidation is performed after mutations.
 
 from datetime import datetime, timezone
 
+import structlog
+from fastapi import BackgroundTasks, UploadFile
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
-from sqlalchemy import select, func
-from fastapi import UploadFile, BackgroundTasks
 
+from app.core.config import settings
+from app.core.exceptions import ConflictException, ForbiddenException, NotFoundException
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
+from app.core.security import get_password_hash
+from app.core.tasks import BackgroundTaskManager
+from app.crud.crud_user import crud_user
 from app.models.user import User, UserProfile
 from app.schemas.user import UserCreate, UserProfileUpdate
-from app.core.security import get_password_hash
-from app.core.redis import clear_cache, redis_cache, entity_key_generator, query_key_generator
-from app.core.exceptions import ConflictException, ForbiddenException, NotFoundException
-from app.services.s3_service import S3Service
 from app.services.email_service import EmailService
-from app.core.tasks import BackgroundTaskManager
-from app.core.config import settings
-from app.crud.crud_user import crud_user
-import structlog
+from app.services.s3_service import S3Service
 
 logger = structlog.get_logger(__name__)
 

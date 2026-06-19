@@ -9,29 +9,28 @@ Patterns covered:
   5. **Pessimistic Locking + Deadlock Avoidance** — transfer enrollment with ordered locking
 """
 
-from sqlalchemy.orm import Session, selectinload, joinedload
-from sqlalchemy import select, func, case
-
 import structlog
-
 from fastapi import BackgroundTasks
-from app.models.course import Course, Enrollment, Lesson
-from app.models.user import User, Instructor
-from app.schemas.advanced import (
-    BulkEnrollRequest,
-    BulkCourseCreateRequest,
-    TransferEnrollmentRequest,
-)
+from sqlalchemy import case, func, select
+from sqlalchemy.orm import Session, joinedload, selectinload
+
+from app.core.config import settings
 from app.core.exceptions import (
-    NotFoundException,
-    ConflictException,
-    ValidationException,
     AppException,
+    ConflictException,
+    NotFoundException,
+    ValidationException,
 )
 from app.core.redis import clear_cache
 from app.core.tasks import BackgroundTaskManager
+from app.models.course import Course, Enrollment
+from app.models.user import Instructor, User
+from app.schemas.advanced import (
+    BulkCourseCreateRequest,
+    BulkEnrollRequest,
+    TransferEnrollmentRequest,
+)
 from app.services.email_service import EmailService
-from app.core.config import settings
 
 logger = structlog.get_logger(__name__)
 
@@ -208,8 +207,8 @@ class AdvancedService:
                 "title": course.title,
                 "enrollment_count": enrollment_counts.get(course.id, 0),
                 "lessons": [
-                    {"id": l.id, "title": l.title, "lesson_order": l.lesson_order}
-                    for l in sorted(course.lessons, key=lambda x: x.lesson_order)
+                    {"id": lesson.id, "title": lesson.title, "lesson_order": lesson.lesson_order}
+                    for lesson in sorted(course.lessons, key=lambda x: x.lesson_order)
                 ],
             })
 
@@ -343,9 +342,8 @@ class AdvancedService:
                 raise NotFoundException("Course", missing)
 
             # Map back to named references
-            from_course = first_course if first_id == req.from_course_id else second_course
             to_course = second_course if second_id == req.to_course_id else first_course
-            target_course = to_course 
+            target_course = to_course
 
             # Verify enrollment exists in source course
             enrollment = self.db.execute(

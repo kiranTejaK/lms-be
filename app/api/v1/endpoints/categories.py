@@ -1,11 +1,12 @@
 """Category CRUD endpoints."""
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from typing import List
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
 from app.api import deps
-from app.schemas.course import CategoryResponse, CategoryCreate, CategoryUpdate
+from app.schemas.course import CategoryCreate, CategoryResponse, CategoryUpdate
 from app.services.category_service import CategoryService
 
 router = APIRouter()

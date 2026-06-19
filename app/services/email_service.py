@@ -1,12 +1,11 @@
 import smtplib
 import socket
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Dict, Any, Optional
-
-from jinja2 import Template
+from email.mime.text import MIMEText
+from typing import Any, Dict, Optional
 
 import structlog
+from jinja2 import Template
 
 from app.core.config import settings
 

@@ -1,14 +1,15 @@
 """Admin service for failed task management and dashboard statistics."""
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select, func
 from typing import List
-import structlog
 
+import structlog
+from sqlalchemy import func, select
+from sqlalchemy.orm import Session
+
+from app.core.exceptions import NotFoundException
+from app.models.course import Category, Course, Enrollment, Lesson
 from app.models.failed_task import FailedTask
 from app.models.user import User
-from app.models.course import Course, Enrollment, Category, Lesson
-from app.core.exceptions import NotFoundException
 
 logger = structlog.get_logger(__name__)
 

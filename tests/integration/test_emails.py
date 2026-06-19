@@ -2,16 +2,18 @@
 INTEGRATION TEST - MailHog functional email delivery verification.
 
 This test connects to a real SMTP server (MailHog on localhost:1025)
-and verifies that the email was actually delivered by querying the 
+and verifies that the email was actually delivered by querying the
 MailHog HTTP API (localhost:8025).
 
 Unlike the unit tests in test_services.py, these do NOT mock smtplib.
 """
 
-import pytest
 from unittest.mock import patch
+
+import pytest
+
 from app.services.email_service import EmailService
-from app.core.config import settings
+
 
 @pytest.mark.integration
 def test_functional_email_delivery(mailhog_client):

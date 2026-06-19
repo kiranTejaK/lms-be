@@ -9,12 +9,12 @@ from typing import Generator
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from app.db.session import SessionLocal
 from app.core import security
 from app.core.config import settings
+from app.db.session import SessionLocal
 from app.models.user import User
 
 login_token = OAuth2PasswordBearer(tokenUrl=f"{settings.APP_PREFIX}/v1/auth/login")

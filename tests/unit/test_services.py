@@ -11,9 +11,7 @@
 
 """Unit tests for S3 and Email service classes."""
 
-import pytest
-from unittest.mock import patch, MagicMock
-
+from unittest.mock import MagicMock, patch
 
 # ── S3 Service Unit Tests ─────────────────────────────────────────────────
 
@@ -74,7 +72,7 @@ def test_email_send_with_mock():
 
             from app.services.email_service import EmailService
 
-            result = EmailService.send_email(
+            EmailService.send_email(
                 "recipient@example.com",
                 "Test Subject",
                 "app/templates/welcome.html",

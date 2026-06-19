@@ -1,16 +1,17 @@
 """Instructor CRUD service."""
 
-from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import select
 from typing import List
-import structlog
 
-from app.models.user import Instructor, User
-from app.schemas.user import InstructorCreate, InstructorUpdate
-from app.core.exceptions import NotFoundException, ConflictException
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session, joinedload
+
+from app.core.exceptions import ConflictException, NotFoundException
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
 from app.crud.crud_instructor import crud_instructor
 from app.crud.crud_user import crud_user
-from app.core.redis import clear_cache, redis_cache, query_key_generator, entity_key_generator
+from app.models.user import Instructor
+from app.schemas.user import InstructorCreate, InstructorUpdate
 
 logger = structlog.get_logger(__name__)
 

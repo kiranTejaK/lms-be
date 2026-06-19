@@ -1,11 +1,13 @@
 from typing import TYPE_CHECKING, List, Optional
-from sqlalchemy import Column, String, Integer, ForeignKey, Text, Boolean, UniqueConstraint
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+
+from sqlalchemy import Boolean, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.base import BaseModel
 from app.db.mixins import IDMixin, TimeStampMixin
 
 if TYPE_CHECKING:
-    from .user import User, Instructor
+    from .user import Instructor, User
 
 class Category(BaseModel, IDMixin, TimeStampMixin):
     __tablename__ = 'categories'
@@ -31,7 +33,7 @@ class Lesson(BaseModel, IDMixin, TimeStampMixin):
     content: Mapped[str] = mapped_column(Text, nullable=False)
     lesson_order: Mapped[int] = mapped_column(Integer, nullable=False)
     course_id: Mapped[int] = mapped_column(Integer, ForeignKey('courses.id', ondelete='CASCADE'), nullable=False)
-    
+
     course: Mapped["Course"] = relationship("Course", back_populates="lessons")
 
 class Enrollment(BaseModel, IDMixin, TimeStampMixin):

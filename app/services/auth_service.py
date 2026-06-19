@@ -5,23 +5,24 @@ All operations are synchronous, using bcrypt for password hashing
 and PyJWT for token creation/verification.
 """
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select
-
+import structlog
 from fastapi import BackgroundTasks
-from app.models.user import User
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.core.config import settings
+from app.core.exceptions import ForbiddenException, UnauthorizedException, ValidationException
 from app.core.security import (
-    verify_password,
-    get_password_hash,
     create_access_token,
     create_refresh_token,
+    get_password_hash,
+    verify_password,
     verify_token,
 )
-from app.core.exceptions import UnauthorizedException, ForbiddenException, ValidationException
 from app.core.tasks import BackgroundTaskManager
+from app.models.user import User
 from app.services.email_service import EmailService
-import structlog
-from app.core.config  import settings
+
 logger = structlog.get_logger(__name__)
 
 

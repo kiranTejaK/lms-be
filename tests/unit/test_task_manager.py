@@ -8,11 +8,12 @@
 
 """BackgroundTaskManager tests — fully synchronous, real DB."""
 
-import pytest
 from unittest.mock import MagicMock
+
+from sqlalchemy import select
+
 from app.core.tasks import BackgroundTaskManager
 from app.models.failed_task import FailedTask
-from sqlalchemy import select
 
 
 def test_run_with_retry_success(db_session):

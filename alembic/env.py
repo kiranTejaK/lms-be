@@ -7,8 +7,7 @@ and targets all SQLAlchemy models registered via BaseModel.metadata.
 
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 
@@ -21,14 +20,15 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Import the base model and ALL models so metadata is fully populated
-from app.db.base import BaseModel
 # This single import pulls in every model via models/__init__.py
-import app.models  # noqa: F401
+import app.models  # noqa: F401, E402
+from app.db.base import BaseModel  # noqa: E402
 
 target_metadata = BaseModel.metadata
 
-from app.core.config import settings
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus  # noqa: E402
+
+from app.core.config import settings  # noqa: E402
 
 
 def get_url() -> str:

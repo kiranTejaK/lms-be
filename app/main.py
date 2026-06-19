@@ -9,11 +9,11 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.config import settings
 from app.api.v1.api import api_router
-from app.middleware.RequestLoggingMiddleware import RequestLoggingMiddleware
-from app.core.exceptions import register_exception_handlers
 from app.core import logging  # noqa: F401  — initialises structlog on import
+from app.core.config import settings
+from app.core.exceptions import register_exception_handlers
+from app.middleware.RequestLoggingMiddleware import RequestLoggingMiddleware
 
 app = FastAPI(
     title="Learning Platform API",

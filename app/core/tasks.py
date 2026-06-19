@@ -9,9 +9,11 @@ intervention after all retries are exhausted.
 import time
 import traceback
 from datetime import datetime, timezone
-from sqlalchemy.orm import Session
-from app.models.failed_task import FailedTask
+
 import structlog
+from sqlalchemy.orm import Session
+
+from app.models.failed_task import FailedTask
 
 logger = structlog.get_logger(__name__)
 

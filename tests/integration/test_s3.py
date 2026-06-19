@@ -7,11 +7,13 @@ and verifies that the file was actually uploaded and exists.
 Unlike the unit tests in test_services.py, these do NOT mock boto3.client.
 """
 
-import pytest
-from unittest.mock import patch
-from app.services.s3_service import S3Service
-from app.core.config import settings
 import io
+from unittest.mock import patch
+
+import pytest
+
+from app.services.s3_service import S3Service
+
 
 @pytest.mark.integration
 def test_functional_s3_upload_and_delete(s3_integration_client):

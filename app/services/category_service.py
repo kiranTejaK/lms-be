@@ -1,15 +1,16 @@
 """Category CRUD service."""
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select
 from typing import List
-import structlog
 
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.core.exceptions import ConflictException, NotFoundException
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
+from app.crud.crud_course import crud_category
 from app.models.course import Category
 from app.schemas.course import CategoryCreate, CategoryUpdate
-from app.core.redis import clear_cache, redis_cache, query_key_generator, entity_key_generator
-from app.core.exceptions import NotFoundException, ConflictException
-from app.crud.crud_course import crud_category
 
 logger = structlog.get_logger(__name__)
 

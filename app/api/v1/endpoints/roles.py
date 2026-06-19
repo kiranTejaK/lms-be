@@ -1,11 +1,12 @@
 """Role management endpoints."""
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from typing import List
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
 from app.api import deps
-from app.schemas.user import RoleResponse, RoleCreate, RoleAssign
+from app.schemas.user import RoleAssign, RoleCreate, RoleResponse
 from app.services.role_service import RoleService
 
 router = APIRouter()

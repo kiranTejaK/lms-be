@@ -5,9 +5,10 @@ Uses pydantic-settings for type-safe configuration with .env file support.
 All settings have sensible defaults for local development.
 """
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
-from functools import lru_cache
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     """Central configuration — values are loaded from .env or environment."""

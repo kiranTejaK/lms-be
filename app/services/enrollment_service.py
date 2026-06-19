@@ -1,15 +1,16 @@
 """Enrollment management service."""
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select
 from typing import List
-import structlog
 
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.core.exceptions import ForbiddenException, NotFoundException
+from app.core.redis import clear_cache, query_key_generator, redis_cache
+from app.crud.crud_enrollment import crud_enrollment
 from app.models.course import Enrollment
 from app.schemas.course import EnrollmentUpdate
-from app.core.redis import clear_cache, redis_cache, query_key_generator
-from app.core.exceptions import NotFoundException, ForbiddenException
-from app.crud.crud_enrollment import crud_enrollment
 
 logger = structlog.get_logger(__name__)
 

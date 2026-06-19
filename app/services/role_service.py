@@ -1,14 +1,15 @@
 """Role management service."""
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select
 from typing import List
-import structlog
 
-from app.models.user import Role, User
-from app.core.exceptions import NotFoundException, ConflictException
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.core.exceptions import ConflictException, NotFoundException
 from app.crud.crud_role import crud_role
 from app.crud.crud_user import crud_user
+from app.models.user import Role
 
 logger = structlog.get_logger(__name__)
 

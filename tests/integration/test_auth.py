@@ -8,7 +8,7 @@
 """Auth-specific tests: token creation, refresh, and edge cases."""
 
 import uuid
-import pytest
+
 from app.core.config import settings
 
 PREFIX = f"/{settings.APP_PREFIX}/v1"

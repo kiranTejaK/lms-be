@@ -2,13 +2,14 @@
 Course endpoints: CRUD, detailed view, enrollment, and bulk operations.
 """
 
-from fastapi import APIRouter, Depends, BackgroundTasks
+from typing import Dict, List
+
+from fastapi import APIRouter, BackgroundTasks, Depends
 from sqlalchemy.orm import Session
-from typing import List, Dict
 
 from app.api import deps
 from app.models.user import User
-from app.schemas.course import CourseResponse, CourseCreate, CourseUpdate, CourseDetailedResponse
+from app.schemas.course import CourseCreate, CourseDetailedResponse, CourseResponse, CourseUpdate
 from app.services.course_service import CourseService
 
 router = APIRouter()

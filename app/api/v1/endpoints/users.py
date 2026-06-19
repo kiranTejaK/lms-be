@@ -2,14 +2,14 @@
 User management endpoints: profile, avatar upload, listing, and deactivation.
 """
 
-from fastapi import APIRouter, Depends, UploadFile, File, BackgroundTasks
-from sqlalchemy.orm import Session
-from typing import List
+
 import structlog
+from fastapi import APIRouter, BackgroundTasks, Depends, File, UploadFile
+from sqlalchemy.orm import Session
 
 from app.api import deps
 from app.models.user import User
-from app.schemas.user import UserProfileResponse, UserProfileUpdate, UserResponse, UserListResponse
+from app.schemas.user import UserListResponse, UserProfileResponse, UserProfileUpdate, UserResponse
 from app.services.user_service import UserService
 
 router = APIRouter()

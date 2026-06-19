@@ -8,8 +8,8 @@ All operations are synchronous, consistent with the project's architecture.
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 from pydantic import BaseModel as PydanticBaseModel
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.db.base import BaseModel
 

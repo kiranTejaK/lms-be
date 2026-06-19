@@ -9,19 +9,19 @@ Patterns:
   - Pessimistic locking with deadlock avoidance (enrollment transfer)
 """
 
-from fastapi import APIRouter, Depends, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Depends
 from sqlalchemy.orm import Session
 
 from app.api import deps
 from app.schemas.advanced import (
-    BulkEnrollRequest,
-    BulkEnrollResponse,
     BulkCourseCreateRequest,
     BulkCourseCreateResponse,
-    TransferEnrollmentRequest,
-    TransferEnrollmentResponse,
+    BulkEnrollRequest,
+    BulkEnrollResponse,
     CourseAnalyticsResponse,
     InstructorDashboardResponse,
+    TransferEnrollmentRequest,
+    TransferEnrollmentResponse,
 )
 from app.services.advanced_service import AdvancedService
 

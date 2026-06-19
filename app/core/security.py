@@ -11,8 +11,8 @@ settings loaded from ``app.core.config``.
 
 from datetime import datetime, timedelta, timezone
 
-from passlib.context import CryptContext
 import jwt
+from passlib.context import CryptContext
 
 from app.core.config import settings
 
