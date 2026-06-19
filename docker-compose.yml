@@ -1,0 +1,102 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL Database ──────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password1234
+      POSTGRES_DB: prac_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis Cache ──────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI Application ──────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: password1234
+      DB_NAME: prac_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_NAME: "0"
+      APP_PREFIX: doit
+      CACHE_VERSION: v1
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change-me-in-production}
+      JWT_ALGORITHM: HS256
+      JWT_ACCESS_TOKEN_EXPIRY_IN_MINUTES: 30
+      JWT_REFRESH_TOKEN_EXPIRY_IN_MINUTES: 10080
+      LOG_LEVEL: INFO
+      LOG_JSON: "true"
+      ENABLE_FILE_LOGGING: "true"
+      ENABLE_REQUEST_LOGGING: "true"
+      ENVIRONMENT: production
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - app_logs:/app/logs
+
+  # ── MailHog (SMTP Testing) ──────────────────────────────────────────
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # HTTP UI
+    healthcheck:
+      test: ["CMD", "wget", "-O", "-", "http://localhost:8025/api/v2/messages"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Moto (AWS S3 Mock Server) ───────────────────────────────────────
+  moto:
+    image: motoserver/moto:latest
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      MOTO_PORT: 5000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/moto-api/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+  app_logs:

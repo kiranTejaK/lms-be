@@ -1,0 +1,51 @@
+[project]
+name = "fullstack-prod"
+version = "1.0.0"
+description = "Production-grade synchronous FastAPI Learning Platform API"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.13.0",
+    "bcrypt<4.0.0",
+    "boto3>=1.34.0",
+    "email-validator>=2.1.0",
+    "fastapi>=0.110.0",
+    "httpx>=0.27.0",
+    "jinja2>=3.1.3",
+    "passlib[bcrypt]>=1.7.4",
+    "psycopg[binary]>=3.1.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.1.0",
+    "pyjwt>=2.8.0",
+    "python-multipart>=0.0.9",
+    "redis>=5.0.0",
+    "sqlalchemy>=2.0.25",
+    "structlog>=24.1.0",
+    "uvicorn>=0.27.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.27.0",
+    "ruff>=0.3.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+markers = [
+    "integration: marks tests as integration tests (requires Docker services)",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
