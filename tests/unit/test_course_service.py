@@ -60,7 +60,7 @@ def test_enroll_in_course_full(course_service, mock_db):
     # Setup
     mock_course = MagicMock(spec=Course)
     mock_course.max_students = 10
-    mock_db.execute.return_value.scalar_one_or_none.return_value = mock_course
+    mock_db.execute.return_value.scalar_one_or_none.side_effect = [mock_course, None]
     mock_db.scalar.return_value = 10  # Already 10 students
 
     mock_user = MagicMock(spec=User)

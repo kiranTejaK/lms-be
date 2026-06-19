@@ -34,6 +34,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
 
+    services:
+      mailhog:
+        image: mailhog/mailhog:latest
+        ports:
+          - 1025:1025
+          - 8025:8025
+      moto:
+        image: motoserver/moto:latest
+        ports:
+          - 5000:5000
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
     env:
       # Test environment variables (SQLite, no external services)
       DB_HOST: localhost

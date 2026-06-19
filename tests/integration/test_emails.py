@@ -35,7 +35,7 @@ def test_functional_email_delivery(mailhog_client):
 
         # 2. Act - Send the email
         success = EmailService.send_email(
-            recipient_email=recipient,
+            to_email=recipient,
             subject=subject,
             template_path="app/templates/welcome.html", # Assuming this exists
             context={"full_name": "Integration Tester", "year": 2026}
