@@ -138,56 +138,65 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            set -e
+
             mkdir -p /opt/apps/lms_be_prod
             cd /opt/apps/lms_be_prod
-            
-            # Create .env file from secrets securely using a Heredoc
+
+            # Create .env
             cat << 'EOF' > .env
             ${{ secrets.PROD_ENV_FILE }}
             EOF
-            
-            # Get currently running image as fallback
+
+            echo "Deployment directory:"
+            pwd
+            ls -la
+
+            # Verify Docker Compose
+            docker compose version
+
+            # Current image (for rollback)
             CURRENT_IMAGE=$(docker ps --filter "name=lms_be_app" --format "{{.Image}}")
-            echo "Current image is $CURRENT_IMAGE"
-            
-            # Define new image
+            echo "Current image: $CURRENT_IMAGE"
+
+            # New image
             NEW_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/lms-be:${{ github.sha }}"
-            
-            # Pull new image
+            echo "Pulling $NEW_IMAGE"
+
             docker pull $NEW_IMAGE
-            
-            # Deploy new image
+
             export DOCKER_IMAGE=$NEW_IMAGE
             export API_DOMAIN="${{ secrets.API_DOMAIN }}"
-            docker-compose -f docker-compose.prod.yml up -d
-            
-            # Health check
+
+            echo "Starting containers..."
+            docker compose -f docker-compose.prod.yml up -d
+
             echo "Waiting for health check..."
-            sleep 20 # Wait for start_period
-            
+            sleep 20
+
             HEALTH_STATUS=""
+
             for i in {1..12}; do
               HEALTH_STATUS=$(docker inspect --format='{{json .State.Health.Status}}' lms_be_app 2>/dev/null || echo '"unknown"')
-              if [ "$HEALTH_STATUS" == '"healthy"' ]; then
+
+              if [ "$HEALTH_STATUS" = '"healthy"' ]; then
                 echo "Container is healthy!"
-                break
+                exit 0
               fi
-              echo "Health status: $HEALTH_STATUS. Retrying in 5 seconds..."
+
+              echo "Health status: $HEALTH_STATUS"
               sleep 5
             done
-            
-            if [ "$HEALTH_STATUS" != '"healthy"' ]; then
-              echo "Health check failed! Initiating rollback to $CURRENT_IMAGE..."
-              if [ -n "$CURRENT_IMAGE" ]; then
-                export DOCKER_IMAGE=$CURRENT_IMAGE
-                export API_DOMAIN="${{ secrets.API_DOMAIN }}"
-                docker-compose -f docker-compose.prod.yml up -d
-                echo "Rollback to $CURRENT_IMAGE complete."
-              else
-                echo "No previous image to rollback to. Taking down the failed deployment."
-                docker-compose -f docker-compose.prod.yml down
-              fi
-              exit 1
+
+            echo "Health check failed."
+
+            if [ -n "$CURRENT_IMAGE" ]; then
+              echo "Rolling back to $CURRENT_IMAGE"
+
+              export DOCKER_IMAGE=$CURRENT_IMAGE
+              docker compose -f docker-compose.prod.yml up -d
+            else
+              docker compose -f docker-compose.prod.yml down
             fi
-            
-            echo "Deployment successful."
+
+            exit 1
