@@ -5,17 +5,18 @@ Total endpoints: 44 across 10 routers.
 """
 
 from fastapi import APIRouter
+
 from app.api.v1.endpoints import (
-    auth,
-    courses,
-    users,
-    categories,
-    lessons,
-    enrollments,
-    instructors,
-    roles,
     admin,
     advanced_apis,
+    auth,
+    categories,
+    courses,
+    enrollments,
+    instructors,
+    lessons,
+    roles,
+    users,
 )
 
 api_router = APIRouter()

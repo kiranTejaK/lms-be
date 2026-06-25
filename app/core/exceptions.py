@@ -6,42 +6,11 @@ status codes. Use these throughout services instead of raising raw
 HTTPException — the global handler in main.py converts them automatically.
 """
 
-from fastapi import HTTPException, Request
-from fastapi.responses import JSONResponse
 import structlog
+from fastapi import Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
-def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    """Catches automatic Pydantic v2 validation errors and reformats them cleanly."""
-    # V2 introduces a simpler dict format via .errors()
-    errors = exc.errors() 
-    
-    logger.warning(
-        "request_validation_failed",
-        path=str(request.url),
-        errors=errors
-    )
-    
-    # Flatten or structure the errors nicely for your frontend developers
-    readable_errors = [
-        {"field": " -> ".join(str(loc) for loc in err["loc"]), "message": err["msg"]}
-        for err in errors
-    ]
-    
-    return JSONResponse(
-        status_code=422,
-        content={"detail": "Validation Failed", "errors": readable_errors}
-    )
-
-def register_exception_handlers(app) -> None:
-    """Attach all global exception handlers to the FastAPI application."""
-    app.add_exception_handler(AppException, app_exception_handler)
-    
-    # 🌟 ADD THIS: Catches Pydantic Input/Request failures 
-    app.add_exception_handler(RequestValidationError, validation_exception_handler)
-    
-    # Catch-all for everything else
-    app.add_exception_handler(Exception, generic_exception_handler)
 logger = structlog.get_logger(__name__)
 
 
@@ -123,20 +92,20 @@ def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
 def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
     """Catches automatic Pydantic v2 validation errors and reformats them cleanly."""
     # V2 introduces a simpler dict format via .errors()
-    errors = exc.errors() 
-    
+    errors = exc.errors()
+
     logger.warning(
         "request_validation_failed",
         path=str(request.url),
         errors=errors
     )
-    
+
     # Flatten or structure the errors nicely for your frontend developers
     readable_errors = [
         {"field": " -> ".join(str(loc) for loc in err["loc"]), "message": err["msg"]}
         for err in errors
     ]
-    
+
     return JSONResponse(
         status_code=422,
         content={"detail": "Validation Failed", "errors": readable_errors}
@@ -145,9 +114,9 @@ def validation_exception_handler(request: Request, exc: RequestValidationError) 
 def register_exception_handlers(app) -> None:
     """Attach all global exception handlers to the FastAPI application."""
     app.add_exception_handler(AppException, app_exception_handler)
-    
-    # Catches Pydantic Input/Request failures 
+
+    # Catches Pydantic Input/Request failures
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
-    
+
     # Catch-all for everything else
     app.add_exception_handler(Exception, generic_exception_handler)

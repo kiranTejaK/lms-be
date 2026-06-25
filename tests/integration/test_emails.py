@@ -2,16 +2,18 @@
 INTEGRATION TEST - MailHog functional email delivery verification.
 
 This test connects to a real SMTP server (MailHog on localhost:1025)
-and verifies that the email was actually delivered by querying the 
+and verifies that the email was actually delivered by querying the
 MailHog HTTP API (localhost:8025).
 
 Unlike the unit tests in test_services.py, these do NOT mock smtplib.
 """
 
-import pytest
 from unittest.mock import patch
+
+import pytest
+
 from app.services.email_service import EmailService
-from app.core.config import settings
+
 
 @pytest.mark.integration
 def test_functional_email_delivery(mailhog_client):
@@ -27,13 +29,14 @@ def test_functional_email_delivery(mailhog_client):
         mock_settings.EMAIL_FROM_NAME = "Test Admin"
         mock_settings.EMAIL_FROM_EMAIL = "admin@test.com"
         mock_settings.EMAIL_TEMPLATE_DIR = "app/templates"
+        mock_settings.EMAIL_USE_TLS = False
 
         recipient = "user@example.com"
         subject = "Integration Test Email"
 
         # 2. Act - Send the email
         success = EmailService.send_email(
-            recipient_email=recipient,
+            to_email=recipient,
             subject=subject,
             template_path="app/templates/welcome.html", # Assuming this exists
             context={"full_name": "Integration Tester", "year": 2026}

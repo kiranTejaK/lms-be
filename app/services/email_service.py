@@ -1,12 +1,11 @@
 import smtplib
 import socket
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Dict, Any, Optional
-
-from jinja2 import Template
+from email.mime.text import MIMEText
+from typing import Any, Dict, Optional
 
 import structlog
+from jinja2 import Template
 
 from app.core.config import settings
 
@@ -28,7 +27,8 @@ class EmailService:
     def _send(msg: MIMEMultipart) -> bool:
         try:
             with smtplib.SMTP(settings.BREVO_SMTP_SERVER, settings.BREVO_SMTP_PORT, timeout=_SMTP_TIMEOUT,) as server:
-                server.starttls()
+                if settings.EMAIL_USE_TLS:
+                    server.starttls()
                 server.login(settings.BREVO_SMTP_USER or "", settings.BREVO_SMTP_PASSWORD)
                 server.send_message(msg)
             return True

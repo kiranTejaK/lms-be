@@ -1,15 +1,16 @@
 """Lesson CRUD service scoped to courses."""
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select
 from typing import List
-import structlog
 
-from app.models.course import Lesson, Course
-from app.schemas.course import LessonCreate, LessonUpdate
-from app.core.redis import clear_cache, redis_cache, query_key_generator, entity_key_generator
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from app.core.exceptions import NotFoundException
-from app.crud.crud_course import crud_lesson, crud_course
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
+from app.crud.crud_course import crud_course, crud_lesson
+from app.models.course import Lesson
+from app.schemas.course import LessonCreate, LessonUpdate
 
 logger = structlog.get_logger(__name__)
 
@@ -56,7 +57,9 @@ class LessonService:
 
     def update_lesson(self, lesson_id: int, lesson_in: LessonUpdate) -> Lesson:
         """Partially update a lesson."""
-        lesson = self.get_lesson(lesson_id)
+        lesson = crud_lesson.get(self.db, lesson_id)
+        if not lesson:
+            raise NotFoundException("Lesson", lesson_id)
         update_data = lesson_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(lesson, field, value)
@@ -69,7 +72,9 @@ class LessonService:
 
     def delete_lesson(self, lesson_id: int) -> dict:
         """Delete a lesson."""
-        lesson = self.get_lesson(lesson_id)
+        lesson = crud_lesson.get(self.db, lesson_id)
+        if not lesson:
+            raise NotFoundException("Lesson", lesson_id)
         self.db.delete(lesson)
         self.db.commit()
 

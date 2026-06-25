@@ -1,15 +1,15 @@
 """add failed_tasks table
 
 Revision ID: 554b841513e5
-Revises: 
+Revises:
 Create Date: 2026-03-12 00:06:39.518352
 
 """
 from typing import Sequence, Union
 
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = '554b841513e5'

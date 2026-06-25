@@ -3,13 +3,13 @@ Authentication endpoints: login, register, token refresh, current user,
 change password, and logout.
 """
 
-from fastapi import APIRouter, Depends, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app.api import deps
 from app.models.user import User
-from app.schemas.user import Token, TokenRefresh, UserCreate, UserResponse, ChangePassword
+from app.schemas.user import ChangePassword, Token, TokenRefresh, UserCreate, UserResponse
 from app.services.auth_service import AuthService
 from app.services.user_service import UserService
 
@@ -18,7 +18,7 @@ router = APIRouter()
 #completed
 @router.post("/register", response_model=UserResponse)
 def register(
-    user_in: UserCreate, 
+    user_in: UserCreate,
     background_tasks: BackgroundTasks,
     db: Session = Depends(deps.get_db)
 ):

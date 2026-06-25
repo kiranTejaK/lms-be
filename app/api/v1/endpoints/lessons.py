@@ -1,11 +1,12 @@
 """Lesson CRUD endpoints, scoped to courses."""
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from typing import List
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
 from app.api import deps
-from app.schemas.course import LessonResponse, LessonCreate, LessonUpdate
+from app.schemas.course import LessonCreate, LessonResponse, LessonUpdate
 from app.services.lesson_service import LessonService
 
 router = APIRouter()

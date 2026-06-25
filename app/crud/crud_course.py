@@ -2,15 +2,18 @@
 
 from typing import List
 
-from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.models.course import Course, Category, Lesson
+from app.models.course import Category, Course, Lesson
 from app.schemas.course import (
-    CourseCreate, CourseUpdate,
-    CategoryCreate, CategoryUpdate,
-    LessonCreate, LessonUpdate,
+    CategoryCreate,
+    CategoryUpdate,
+    CourseCreate,
+    CourseUpdate,
+    LessonCreate,
+    LessonUpdate,
 )
 
 

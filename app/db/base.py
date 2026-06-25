@@ -14,7 +14,7 @@ convention = {
 class BaseModel(DeclarativeBase):
     """
     Base class for all SQLAlchemy 2.0 mapped models.
-    Inherits from DeclarativeBase which is the modern approach 
+    Inherits from DeclarativeBase which is the modern approach
     over declarative_base().
     """
     metadata = MetaData(naming_convention=convention)

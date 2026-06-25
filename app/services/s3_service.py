@@ -1,8 +1,7 @@
 import boto3
-from botocore.exceptions import NoCredentialsError, ClientError
-from botocore.config import Config
-
 import structlog
+from botocore.config import Config
+from botocore.exceptions import ClientError, NoCredentialsError
 
 from app.core.config import settings
 

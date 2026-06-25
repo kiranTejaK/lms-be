@@ -1,7 +1,9 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
+
 import structlog
+
 from app.core.config import settings
 
 _CONFIGURED = False

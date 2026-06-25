@@ -1,13 +1,14 @@
 """Admin endpoints: failed tasks management and dashboard stats."""
 
+from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
 
 from app.api import deps
 from app.models.user import User
-from app.schemas.failed_task import FailedTaskResponse
 from app.schemas.course import DashboardStats
+from app.schemas.failed_task import FailedTaskResponse
 from app.services.admin_service import AdminService
 
 router = APIRouter()

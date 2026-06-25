@@ -1,8 +1,9 @@
 """Enrollment management endpoints."""
 
+from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
 
 from app.api import deps
 from app.models.user import User

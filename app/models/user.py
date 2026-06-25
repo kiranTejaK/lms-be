@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING, List, Optional
-from sqlalchemy import Column, String, Boolean, Integer, Table, ForeignKey, Text, Float
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, Table, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.base import BaseModel
 from app.db.mixins import IDMixin, TimeStampMixin
 
@@ -45,6 +47,6 @@ class Instructor(BaseModel, IDMixin, TimeStampMixin):
     specialization: Mapped[str] = mapped_column(String(255), nullable=False)
     rating: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id', ondelete='CASCADE'), unique=True, index=True, nullable=False)
-    
+
     user: Mapped["User"] = relationship("User", back_populates="instructor")
     courses: Mapped[List["Course"]] = relationship("Course", back_populates="instructor")

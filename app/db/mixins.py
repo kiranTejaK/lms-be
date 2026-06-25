@@ -1,7 +1,9 @@
-from sqlalchemy import Column, Integer, DateTime
-from sqlalchemy.orm import Mapped, mapped_column, declarative_mixin
-from sqlalchemy.sql import func
 from datetime import datetime
+
+from sqlalchemy import DateTime, Integer
+from sqlalchemy.orm import Mapped, declarative_mixin, mapped_column
+from sqlalchemy.sql import func
+
 
 @declarative_mixin
 class IDMixin:

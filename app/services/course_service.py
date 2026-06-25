@@ -6,20 +6,21 @@ Uses `selectinload` / `joinedload` to prevent N+1 queries.
 Enrollment uses `with_for_update()` row locking for concurrency safety.
 """
 
-from sqlalchemy.orm import Session, selectinload, joinedload
-from sqlalchemy import select, func, update
-from typing import List, Dict
-import structlog
+from typing import List
 
+import structlog
 from fastapi import BackgroundTasks
+from sqlalchemy import func, select, update
+from sqlalchemy.orm import Session, joinedload, selectinload
+
+from app.core.config import settings
+from app.core.exceptions import AppException, ConflictException, NotFoundException, ValidationException
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
+from app.core.tasks import BackgroundTaskManager
 from app.models.course import Course, Enrollment
 from app.models.user import User
 from app.schemas.course import CourseCreate, CourseUpdate
-from app.core.redis import clear_cache, redis_cache, query_key_generator, entity_key_generator
-from app.core.exceptions import NotFoundException, ConflictException, ValidationException, AppException
-from app.core.tasks import BackgroundTaskManager
 from app.services.email_service import EmailService
-from app.core.config import settings
 
 logger = structlog.get_logger(__name__)
 

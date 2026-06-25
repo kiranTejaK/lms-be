@@ -1,16 +1,17 @@
 """Instructor CRUD service."""
 
-from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import select
 from typing import List
-import structlog
 
-from app.models.user import Instructor, User
-from app.schemas.user import InstructorCreate, InstructorUpdate
-from app.core.exceptions import NotFoundException, ConflictException
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session, joinedload
+
+from app.core.exceptions import ConflictException, NotFoundException
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
 from app.crud.crud_instructor import crud_instructor
 from app.crud.crud_user import crud_user
-from app.core.redis import clear_cache, redis_cache, query_key_generator, entity_key_generator
+from app.models.user import Instructor
+from app.schemas.user import InstructorCreate, InstructorUpdate
 
 logger = structlog.get_logger(__name__)
 
@@ -66,7 +67,9 @@ class InstructorService:
 
     def update_instructor(self, instructor_id: int, inst_in: InstructorUpdate) -> Instructor:
         """Partially update an instructor's details."""
-        inst = self.get_instructor(instructor_id)
+        inst = crud_instructor.get(self.db, instructor_id)
+        if not inst:
+            raise NotFoundException("Instructor", instructor_id)
         update_data = inst_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(inst, field, value)

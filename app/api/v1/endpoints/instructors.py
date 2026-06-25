@@ -1,11 +1,12 @@
 """Instructor CRUD endpoints."""
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from typing import List
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
 from app.api import deps
-from app.schemas.user import InstructorResponse, InstructorCreate, InstructorUpdate
+from app.schemas.user import InstructorCreate, InstructorResponse, InstructorUpdate
 from app.services.instructor_service import InstructorService
 
 router = APIRouter()

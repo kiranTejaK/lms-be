@@ -1,8 +1,8 @@
 """Course-related Pydantic schemas for request/response serialization."""
 
-from pydantic import BaseModel, ConfigDict
-from typing import Optional, List
+from typing import List, Optional
 
+from pydantic import BaseModel, ConfigDict
 
 # ── Category ─────────────────────────────────────────────────────────────
 
@@ -85,7 +85,8 @@ class EnrollmentResponse(BaseModel):
 
 # ── Nested / Detailed Responses ──────────────────────────────────────────
 
-from app.schemas.user import InstructorResponse
+from app.schemas.user import InstructorResponse  # noqa: E402
+
 
 class CourseDetailedResponse(CourseResponse):
     """Course with eager-loaded relations for dashboard views."""

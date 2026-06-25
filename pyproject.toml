@@ -1,5 +1,5 @@
 [project]
-name = "fullstack-prod"
+name = "lms-be"
 version = "1.0.0"
 description = "Production-grade synchronous FastAPI Learning Platform API"
 readme = "README.md"
@@ -49,3 +49,11 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
 ignore = ["E501"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["alembic*"]

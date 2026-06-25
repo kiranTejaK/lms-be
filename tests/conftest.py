@@ -19,10 +19,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.main import app
 from app.api.deps import get_db
-from app.db.base import BaseModel
 from app.core.security import create_access_token, get_password_hash
+from app.db.base import BaseModel
+from app.main import app
 
 # ── Test Database (SQLite In-Memory) ──────────────────────────────────────
 
@@ -86,8 +86,9 @@ def client(db_session):
 @pytest.fixture
 def test_user(db_session):
     """Create and return a test user in the database."""
-    from app.models.user import User
     import uuid
+
+    from app.models.user import User
 
     unique = str(uuid.uuid4())[:8]
     user = User(
@@ -112,8 +113,9 @@ def auth_headers(test_user):
 @pytest.fixture
 def test_category(db_session):
     """Create and return a test category."""
-    from app.models.course import Category
     import uuid
+
+    from app.models.course import Category
 
     cat = Category(name=f"TestCategory_{str(uuid.uuid4())[:8]}")
     db_session.add(cat)
@@ -159,8 +161,9 @@ def test_lesson(db_session, test_course):
 @pytest.fixture
 def admin_user(db_session):
     """Create an admin user with 'admin' role."""
-    from app.models.user import User, Role
     import uuid
+
+    from app.models.user import Role, User
 
     unique = str(uuid.uuid4())[:8]
 
@@ -194,6 +197,8 @@ def admin_headers(admin_user):
 @pytest.fixture
 def two_users(db_session):
     """Create two test users for bulk enrollment tests."""
+    import uuid
+
     from app.models.user import User
 
     users = []

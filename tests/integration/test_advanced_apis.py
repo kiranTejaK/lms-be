@@ -14,11 +14,9 @@
 
 """Advanced API endpoint tests — production database patterns."""
 
-import uuid
-import pytest
 from unittest.mock import patch
+
 from app.core.config import settings
-from app.core.security import get_password_hash
 
 PREFIX = f"/{settings.APP_PREFIX}/v1"
 

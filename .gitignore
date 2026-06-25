@@ -30,3 +30,10 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Documentation
+docs/
+
+# Custom exclusions
+deployment_guide.md
+

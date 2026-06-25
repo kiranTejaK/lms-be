@@ -1,8 +1,8 @@
 """Pydantic schemas for advanced API endpoints."""
 
-from pydantic import BaseModel, ConfigDict
-from typing import Optional, List
+from typing import List, Optional
 
+from pydantic import BaseModel, ConfigDict
 
 # ── Requests ─────────────────────────────────────────────────────────────
 

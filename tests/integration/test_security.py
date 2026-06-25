@@ -6,8 +6,8 @@
 # JWT token creation / verification (PyJWT).
 # ==============================================================================
 
-import pytest
 from datetime import timedelta
+
 from app.core import security
 
 

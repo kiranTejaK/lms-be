@@ -43,7 +43,7 @@ The application follows a **4-layer synchronous architecture**:
 ## Project Structure
 
 ```
-fullstack_prod/
+lms_be_prod/
 ├── app/
 │   ├── api/
 │   │   ├── deps.py                  # Auth & DB dependencies
@@ -93,7 +93,7 @@ fullstack_prod/
 
 ```bash
 git clone <repository-url>
-cd fullstack_prod
+cd lms_be_prod
 ```
 
 ### 2. Environment Variables
@@ -155,7 +155,7 @@ All services have health checks — the app waits for PostgreSQL and Redis to be
 ### Build Image Only
 
 ```bash
-docker build -t fullstack-prod:latest .
+docker build -t lms-be:latest .
 ```
 
 ### Stop Services
@@ -199,8 +199,8 @@ export DB_HOST=your-rds-endpoint
 ### 2. Build and Push Docker Image
 
 ```bash
-docker build -t your-registry/fullstack-prod:latest .
-docker push your-registry/fullstack-prod:latest
+docker build -t your-registry/lms-be:latest .
+docker push your-registry/lms-be:latest
 ```
 
 ### 3. Deploy with Docker Compose
@@ -245,7 +245,7 @@ curl http://your-server:8000/health
 When the server is running, interactive documentation is available at:
 
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **OpenAPI JSON**: `http://localhost:8000/doit/v1/openapi.json`
+- **OpenAPI JSON**: `http://localhost:8000/lms_be/v1/openapi.json`
 
 See [`docs/endpoints_full_flow.md`](docs/endpoints_full_flow.md) for detailed request flow documentation.
 

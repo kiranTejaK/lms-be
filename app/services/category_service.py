@@ -1,15 +1,16 @@
 """Category CRUD service."""
 
-from sqlalchemy.orm import Session
-from sqlalchemy import select
 from typing import List
-import structlog
 
+import structlog
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.core.exceptions import ConflictException, NotFoundException
+from app.core.redis import clear_cache, entity_key_generator, query_key_generator, redis_cache
+from app.crud.crud_course import crud_category
 from app.models.course import Category
 from app.schemas.course import CategoryCreate, CategoryUpdate
-from app.core.redis import clear_cache, redis_cache, query_key_generator, entity_key_generator
-from app.core.exceptions import NotFoundException, ConflictException
-from app.crud.crud_course import crud_category
 
 logger = structlog.get_logger(__name__)
 
@@ -49,7 +50,9 @@ class CategoryService:
 
     def update_category(self, category_id: int, cat_in: CategoryUpdate) -> Category:
         """Update a category's fields."""
-        cat = self.get_category(category_id)
+        cat = crud_category.get(self.db, category_id)
+        if not cat:
+            raise NotFoundException("Category", category_id)
         update_data = cat_in.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(cat, field, value)
@@ -62,7 +65,9 @@ class CategoryService:
 
     def delete_category(self, category_id: int) -> dict:
         """Delete a category. Courses referencing it will have category_id set to NULL."""
-        cat = self.get_category(category_id)
+        cat = crud_category.get(self.db, category_id)
+        if not cat:
+            raise NotFoundException("Category", category_id)
         self.db.delete(cat)
         self.db.commit()
 

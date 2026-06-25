@@ -22,7 +22,7 @@ This document traces the **full lifecycle of a request** through the application
 
 ## Flow 1: Listing Courses (Public, Cached)
 
-**`GET /doit/v1/courses/?skip=0&limit=10`**
+**`GET /lms_be/v1/courses/?skip=0&limit=10`**
 
 ```
 1. RequestLoggingMiddleware → logs "request_started"
@@ -30,7 +30,7 @@ This document traces the **full lifecycle of a request** through the application
 3. Depends(get_db) → yields a SQLAlchemy Session
 4. CourseService(db).get_courses(skip=0, limit=10) is called
 5. @redis_cache decorator:
-   a. Generates key: "doit:v1:courses:get_courses:query:<hash>"
+   a. Generates key: "lms_be:v1:courses:get_courses:query:<hash>"
    b. cache_get(key) → None (cache miss)
 6. Service executes:
    SELECT * FROM courses
@@ -48,7 +48,7 @@ This document traces the **full lifecycle of a request** through the application
 
 ## Flow 2: Enrolling in a Course (Authenticated, Transactional)
 
-**`POST /doit/v1/courses/5/enroll`** with `Authorization: Bearer <token>`
+**`POST /lms_be/v1/courses/5/enroll`** with `Authorization: Bearer <token>`
 
 ```
 1. RequestLoggingMiddleware → logs "request_started"
@@ -87,7 +87,7 @@ The `FOR UPDATE` lock on step 5a prevents concurrent enrollments from exceeding 
 
 ## Flow 3: Admin Dashboard (Protected, Aggregated)
 
-**`GET /doit/v1/admin/dashboard`** with admin token
+**`GET /lms_be/v1/admin/dashboard`** with admin token
 
 ```
 1. Dependencies resolve:

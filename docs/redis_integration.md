@@ -70,13 +70,13 @@ Two key generators handle different caching scenarios:
 
 **Query keys** (for paginated lists):
 ```
-doit:v1:courses:get_courses:query:a1b2c3d4...
+lms_be:v1:courses:get_courses:query:a1b2c3d4...
 ```
 The hash is derived from the function arguments, ensuring different pagination/filter combos get different cache entries.
 
 **Entity keys** (for single lookups):
 ```
-doit:v1:users:profile:42
+lms_be:v1:users:profile:42
 ```
 Deterministic and predictable, making targeted invalidation trivial.
 
@@ -133,10 +133,10 @@ clear_cache(entity_key_generator("users", "profile", str(user_id)))
 
 ## Example Flow
 
-1. Client sends `GET /doit/v1/courses/`
+1. Client sends `GET /lms_be/v1/courses/`
 2. `CourseService.get_courses()` is decorated with `@redis_cache`
-3. Decorator calls `query_key_generator` → `doit:v1:courses:get_courses:query:abc123`
-4. `cache_get("doit:v1:courses:get_courses:query:abc123")` → `None` (miss)
+3. Decorator calls `query_key_generator` → `lms_be:v1:courses:get_courses:query:abc123`
+4. `cache_get("lms_be:v1:courses:get_courses:query:abc123")` → `None` (miss)
 5. Function executes, queries PostgreSQL, returns `[Course, ...]`
 6. Decorator serialises result → `cache_set(key, json_str, 3600)`
 7. Next identical request hits the cache → returns JSON directly, skipping the database
