@@ -95,7 +95,7 @@ This is the first job because linting is fast. We use `ruff` to check for syntax
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t fullstack-prod:latest .
+        run: docker build -t lms-be:latest .
 ```
 *Logic Flow:*
 *   **Conditional Execution:** The `if: github.ref == 'refs/heads/main'` ensures that we only build the Docker image for production when code is merged into the `main` branch. It prevents wasting time building images for every minor PR or development push.

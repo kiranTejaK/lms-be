@@ -110,7 +110,7 @@ When credentials are `None`, the service initialises with `s3_client = None` and
 
 ## Example Flow
 
-1. User sends `PUT /doit/v1/users/42/profile/avatar` with a JPEG file
+1. User sends `PUT /lms_be/v1/users/42/profile/avatar` with a JPEG file
 2. `UserService.upload_avatar()` validates ownership
 3. `S3Service()` is instantiated (picks up current credentials)
 4. Content type `image/jpeg` passes validation

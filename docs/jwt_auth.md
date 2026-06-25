@@ -124,10 +124,10 @@ def get_current_user_info(current_user: User = Depends(deps.get_current_user)):
 
 ## Example Flow
 
-1. `POST /doit/v1/auth/login` with `email` + `password`
+1. `POST /lms_be/v1/auth/login` with `email` + `password`
 2. Server verifies password → issues `access_token` (30 min) + `refresh_token` (7 days)
 3. Client stores both tokens
-4. `GET /doit/v1/auth/me` with `Authorization: Bearer <access_token>`
+4. `GET /lms_be/v1/auth/me` with `Authorization: Bearer <access_token>`
 5. `deps.get_current_user()` decodes token → loads User from DB → returns user data
-6. When access token expires → `POST /doit/v1/auth/refresh` with `refresh_token`
+6. When access token expires → `POST /lms_be/v1/auth/refresh` with `refresh_token`
 7. Server issues new token pair → client updates stored tokens

@@ -50,7 +50,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_NAME: "0"
-      APP_PREFIX: doit
+      APP_PREFIX: lms_be
       CACHE_VERSION: v1
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change-me-in-production}
       JWT_ALGORITHM: HS256

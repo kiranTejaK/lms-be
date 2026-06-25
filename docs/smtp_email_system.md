@@ -123,7 +123,7 @@ When `BREVO_SMTP_PASSWORD` is `None`, all send methods return `False` and log a 
 
 ## Example Flow
 
-1. User registers via `POST /doit/v1/auth/register`
+1. User registers via `POST /lms_be/v1/auth/register`
 2. `UserService.create_user()` creates the user in PostgreSQL
 3. (Optional) Service calls `EmailService.send_email()`:
    ```python

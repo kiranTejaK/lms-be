@@ -1,5 +1,5 @@
 [project]
-name = "fullstack-prod"
+name = "lms-be"
 version = "1.0.0"
 description = "Production-grade synchronous FastAPI Learning Platform API"
 readme = "README.md"

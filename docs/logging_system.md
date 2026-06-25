@@ -54,7 +54,7 @@ This prevents duplicate handlers when the module is re-imported (common during t
 `app/middleware/RequestLoggingMiddleware.py` logs every request/response cycle:
 
 ```json
-{"event": "request_started", "method": "GET", "url": "http://localhost:8000/doit/v1/courses/", "level": "info"}
+{"event": "request_started", "method": "GET", "url": "http://localhost:8000/lms_be/v1/courses/", "level": "info"}
 {"event": "request_finished", "method": "GET", "status_code": 200, "process_time": "0.0042s", "level": "info"}
 ```
 
@@ -104,8 +104,8 @@ This prevents duplicate handlers when the module is re-imported (common during t
 
 ## Example Flow
 
-1. Client sends `POST /doit/v1/auth/login`
-2. **Middleware** logs: `request_started (POST /doit/v1/auth/login)`
+1. Client sends `POST /lms_be/v1/auth/login`
+2. **Middleware** logs: `request_started (POST /lms_be/v1/auth/login)`
 3. **AuthService** logs: `login_attempt (username=user@example.com)`
 4. **AuthService** logs: `login_success (user_id=42)` or `login_failed`
 5. **Middleware** logs: `request_finished (200, 0.0123s)`
